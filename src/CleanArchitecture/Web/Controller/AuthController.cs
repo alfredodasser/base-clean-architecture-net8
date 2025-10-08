@@ -1,13 +1,17 @@
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Features.Authentication.Commands;
 using CleanArchitecture.Shared.Models.User;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace CleanArchitecture.Web.Controller;
 
-public class AuthController(IAuthService authService) : BaseController
+public class AuthController(IAuthService authService, IMediator mediator) : BaseController
 {
+    private readonly IMediator _mediator = mediator;
+
     private readonly IAuthService _userService = authService;
 
     /// <summary>
@@ -32,7 +36,8 @@ public class AuthController(IAuthService authService) : BaseController
     [SwaggerResponse(201, "User registered successfully.")]
     [SwaggerResponse(400, "Invalid request.")]
     public async Task<IActionResult> SignUp(UserSignUpRequest request, CancellationToken token)
-        => Ok(await _userService.SignUp(request, token));
+        // => Ok(await _userService.SignUp(request, token));
+        => Ok(await _mediator.Send(new AuthenticateUserCommand(request.UserName, request.Password)));
 
     /// <summary>
     /// Logout

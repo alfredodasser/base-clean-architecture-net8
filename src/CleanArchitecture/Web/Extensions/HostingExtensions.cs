@@ -13,6 +13,7 @@ public static class HostingExtensions
         builder.Services.AddInfrastructuresService(appsettings);
         builder.Services.AddApplicationService(appsettings);
         builder.Services.AddWebAPIService(appsettings);
+        builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
         return builder.Build();
     }

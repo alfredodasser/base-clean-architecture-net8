@@ -61,4 +61,26 @@ public class BookService(IUnitOfWork unitOfWork, IMapper mapper) : IBookService
         await _unitOfWork.ExecuteTransactionAsync(() => _unitOfWork.BookRepository.Delete(existBook), token);
         return _mapper.Map<BookDTO>(existBook);
     }
+
+    public async Task<Pagination<BookDTO>> SearchByTitle(string title, int pageIndex, int pageSize, CancellationToken token)
+    {
+
+        var books = await _unitOfWork.BookRepository.ToPagination(
+           pageIndex: pageIndex,
+           pageSize: pageSize,
+           filter: x => x.Title.Contains(title),
+           orderBy: x => x.Title,
+           ascending: true,
+           selector: x => new BookDTO
+           {
+               Id = x.Id,
+               Title = x.Title,
+               Description = x.Description,
+               Price = x.Price
+           }
+         );
+
+
+        return books;
+    }
 }

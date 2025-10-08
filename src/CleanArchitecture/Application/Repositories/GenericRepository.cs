@@ -8,7 +8,7 @@ namespace CleanArchitecture.Application.Repositories;
 
 public class GenericRepository<T>(ApplicationDbContext context) : IGenericRepository<T> where T : class
 {
-    protected DbSet<T> _dbSet = context.Set<T>();
+    public DbSet<T> _dbSet = context.Set<T>();
 
     public async Task AddAsync(T entity)
     {

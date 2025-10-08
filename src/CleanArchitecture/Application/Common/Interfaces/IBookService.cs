@@ -10,4 +10,5 @@ public interface IBookService
     Task<BookDTO> Add(AddBookRequest request, CancellationToken token);
     Task<BookDTO> Update(UpdateBookRequest request, CancellationToken token);
     Task<BookDTO> Delete(int id, CancellationToken token);
+    Task<Pagination<BookDTO>> SearchByTitle(string title, int pageIndex, int pageSize, CancellationToken token);
 }

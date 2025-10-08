@@ -7,11 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration.Get<AppSettings>()
     ?? throw ProgramException.AppsettingNotSetException();
 
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 builder.Services.AddSingleton(configuration);
 var app = await builder.ConfigureServices(configuration).ConfigurePipelineAsync(configuration);
 
 await app.RunAsync();
 
 // this line for integration test
-public partial class Program { }
+//public partial class Program { }

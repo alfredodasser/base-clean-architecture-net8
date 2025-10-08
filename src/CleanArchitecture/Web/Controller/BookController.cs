@@ -4,13 +4,17 @@ using CleanArchitecture.Shared.Models.Book;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using MediatR;
+using CleanArchitecture.Application.Features.Books.Queries;
 
 namespace CleanArchitecture.Web.Controller;
 
-public class BookController(IBookService bookService) : BaseController
+public class BookController(IBookService bookService, IMediator mediator) : BaseController
 {
     private readonly IBookService _bookService = bookService;
+    private readonly IMediator _mediator = mediator;
 
+    /// <summary>
     /// <summary>
     /// get a book by id
     /// </summary>
@@ -71,4 +75,19 @@ public class BookController(IBookService bookService) : BaseController
     [SwaggerResponse(404, "Book not found.")]
     public async Task<IActionResult> Delete(int id, CancellationToken token)
         => Ok(await _bookService.Delete(id, token));
+
+    /// <summary>
+    /// search for books by title
+    /// </summary>
+    /// <param name="title"></param>
+    /// <param name="pageIndex"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
+    [HttpGet("search")]
+    [SwaggerResponse(200, "Books found by title.", typeof(Pagination<BookDTO>))]
+    public async Task<IActionResult> SearchByTitle([FromQuery] string title, [FromQuery] int pageIndex = 0, [FromQuery] int pageSize = 10)
+    {
+        var result = await mediator.Send(new SearchBooksByTitleQuery(title, pageIndex, pageSize));
+        return Ok(result);
+    }
 }

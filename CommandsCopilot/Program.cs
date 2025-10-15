@@ -3,6 +3,11 @@
 public class Calculadora
 {
     public int Sumar(int a, int b) => a + b;
+    public double CalcularPromedio(int suma, int cantidad)
+    {
+        return suma / cantidad;
+    }
+    public int Multiplicar(int a, int b) => a * b;
 }
 
 public class Program

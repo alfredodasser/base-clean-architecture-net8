@@ -125,3 +125,25 @@ This project is licensed under the MIT License.
 ## Contact
 
 For any inquiries, contact the repository owner [here](https://github.com/nhonvo).
+
+## Generando TESTS
+
+
+## Configurar SOnarlint
+1- Crear cuenta en SonarCloud
+2- Vincular proyecto a Sonarcloud
+3- Configurar entorno local con sonarcloud
+
+
+dotnet tool install --global dotnet-sonarscanner
+
+dotnet sonarscanner begin `
+  /key:"alfredodasser_base-clean-architecture-net8" `
+  /organization:"alfredodeveloper" `
+  /d:sonar.token="44f4c0621a61ef58a8fba11a7e1ae2046171e1b9" `
+  /d:sonar.host.url="https://sonarcloud.io"
+
+dotnet build
+
+dotnet sonarscanner end /d:sonar.token="44f4c0621a61ef58a8fba11a7e1ae2046171e1b9"
+

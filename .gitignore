@@ -416,3 +416,9 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+
+# excluye el codigo no versionable generado por sonarcloud o sonarqube
+.sonar/
+.sonarqube/
+

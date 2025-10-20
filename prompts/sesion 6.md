@@ -57,6 +57,136 @@ git commit -m "Add unit tests for BookService to improve coverage #1"
 
 # SNIPPETS
 
+  //Agregar un nuevo codesnippet:
+
+  <?xml version="1.0" encoding="utf-8"?>
+  <CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+    <CodeSnippet Format="1.0.0">
+      <Header>
+        <Title>MediatR Query (CQRS)</Title>
+        <Shortcut>mediatrquery</Shortcut>
+        <Description>Genera una Query y Handler basados en CQRS usando MediatR.</Description>
+        <Author>Alfredo Benaute</Author>
+      </Header>
+      <Snippet>
+        <Declarations>
+          <Literal>
+            <ID>Entity</ID>
+            <ToolTip>Nombre de la entidad o tipo de resultado</ToolTip>
+            <Default>Product</Default>
+          </Literal>
+          <Literal>
+            <ID>QueryName</ID>
+            <ToolTip>Nombre de la Query</ToolTip>
+            <Default>GetAllProductsQuery</Default>
+          </Literal>
+          <Literal>
+            <ID>Namespace</ID>
+            <ToolTip>Espacio de nombres del proyecto</ToolTip>
+            <Default>MyApp.Application.Features.Products.Queries</Default>
+          </Literal>
+        </Declarations>
+
+        <Code Language="csharp"><![CDATA[
+  using MediatR;
+  using System.Collections.Generic;
+  using System.Threading;
+  using System.Threading.Tasks;
+
+  namespace $Namespace$
+  {
+      // ✅ Query Definition
+      public record $QueryName$ : IRequest<IEnumerable<$Entity$>>
+      {
+          // Puedes agregar filtros opcionales, por ejemplo:
+          // public string? Category { get; init; }
+      }
+
+      // ✅ Handler Implementation
+      public class $QueryName$Handler : IRequestHandler<$QueryName$, IEnumerable<$Entity$>>
+      {
+          private readonly I$Entity$Repository _repository;
+
+          public $QueryName$Handler(I$Entity$Repository repository)
+          {
+              _repository = repository;
+          }
+
+          public async Task<IEnumerable<$Entity$>> Handle($QueryName$ request, CancellationToken cancellationToken)
+          {
+              // Lógica de negocio o acceso a datos
+              var result = await _repository.GetAllAsync(cancellationToken);
+
+              // Puedes aplicar filtros adicionales si es necesario
+              return result;
+          }
+      }
+
+      // ✅ Repository Interface (opcional)
+      public interface I$Entity$Repository
+      {
+          Task<IEnumerable<$Entity$>> GetAllAsync(CancellationToken cancellationToken);
+      }
+  }
+        ]]></Code>
+      </Snippet>
+    </CodeSnippet>
+  </CodeSnippets>
+
+  <!-- Snippet: Registrar en log -->
+  <?xml version="1.0" encoding="utf-8"?>
+  <CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+    <CodeSnippet Format="1.0.0">
+      <Header>
+        <Title>ILogger Extension - Log Method</Title>
+        <Shortcut>logmethod</Shortcut>
+        <Description>Genera un método de extensión para ILogger que registra un mensaje con nivel y EventId opcionales.</Description>
+        <Author>Alfredo Benaute</Author>
+      </Header>
+      <Snippet>
+        <Declarations>
+          <Literal>
+            <ID>Namespace</ID>
+            <ToolTip>Namespace donde se ubicará la extensión</ToolTip>
+            <Default>MyApp.Shared.Logging</Default>
+          </Literal>
+          <Literal>
+            <ID>ClassName</ID>
+            <ToolTip>Nombre de la clase estática que contendrá la extensión</ToolTip>
+            <Default>LoggerExtensions</Default>
+          </Literal>
+          <Literal>
+            <ID>MethodName</ID>
+            <ToolTip>Nombre del método de extensión</ToolTip>
+            <Default>LogInformationWithEvent</Default>
+          </Literal>
+        </Declarations>
+        <Code Language="csharp"><![CDATA[
+using Microsoft.Extensions.Logging;
+
+namespace $Namespace$
+{
+    public static class $ClassName$
+    {
+        public static void $MethodName$(this ILogger logger, string message, LogLevel level = LogLevel.Information, int? eventId = null)
+        {
+            if (logger == null) return;
+
+            if (eventId.HasValue)
+            {
+                logger.Log(level, new EventId(eventId.Value), message);
+            }
+            else
+            {
+                logger.Log(level, message);
+            }
+        }
+    }
+}
+        ]]></Code>
+      </Snippet>
+    </CodeSnippet>
+  </CodeSnippets>
 
 # APROVECHAR CONTEXTO
 

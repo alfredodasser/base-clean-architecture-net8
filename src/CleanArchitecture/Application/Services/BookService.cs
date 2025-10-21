@@ -37,7 +37,15 @@ public class BookService(IUnitOfWork unitOfWork, IMapper mapper) : IBookService
 
     public async Task<BookDTO> Add(AddBookRequest request, CancellationToken token)
     {
+        // Validación para evitar duplicados por título (ignorando mayúsculas/minúsculas)
+        bool exists = await _unitOfWork.BookRepository.AnyAsync(
+            x => x.Title.ToLower() == request.Title.ToLower());
+
+        if (exists)
+            throw new UserFriendlyException("Ya existe un libro con ese título.", "Duplicado");
+
         var book = _mapper.Map<Book>(request);
+
         await _unitOfWork.ExecuteTransactionAsync(async () => await _unitOfWork.BookRepository.AddAsync(book), token);
         return _mapper.Map<BookDTO>(book);
     }

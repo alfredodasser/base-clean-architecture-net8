@@ -1,0 +1,6 @@
+#  Agregar Instrucciones personalizadas para commits
+[commit-message]
+Usa el formato Conventional Commits.
+Comienza con feat, fix, docs, chore o refactor.
+Ejemplo: feat(api): agrega validación de tokens JWT
+Escribe en español, en tono profesional y claro.
